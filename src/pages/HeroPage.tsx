@@ -1,11 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Box } from '@mui/material';
+import AirportsCombo from '../components/AirportsCombo';
 
 const HeroPage = () => {
   const baseURL = "https://api.tequila.kiwi.com/v2/search";
-  // const baseURL = 'https://api.tequila.kiwi.com/v2/search?fly_from=DEL&fly_to=BLR&date_from=26%2F03%2F2024&date_to=28%2F03%2F2024&curr=INR&limit=50&sort=price&max_stopovers=5';
-  // const apiKey = 'PEQLsHiSJQbj8TF_3bq_LoWs_6KAFlZ4';
-  const apiKey= "vb7k5k8Jl7UkJim2ICfKSy77b3B0UVKY"
+  const apiKey= "awhSTq2D_3Bn5Jx9iYMr1QhuHirhStNb"
+
+  const [source, setSource] = useState<any>();
+  const [destination, setDestination] = useState<any>();
+
+  console.log('source', source)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +44,11 @@ const HeroPage = () => {
   }, []);
 
   return (
-    <div>HeroPage</div>
+    <>
+      <Box sx={{display: 'flex', flexDirection: 'column'}}>
+        <AirportsCombo setLocation={setSource} label={'From'}/>
+      </Box>
+    </>
   );
 }
 
