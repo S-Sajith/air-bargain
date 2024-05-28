@@ -1,19 +1,17 @@
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import LeftMenu from "./components/LeftMenu";
 import HeroPage from "./pages/HeroPage";
 import Footer from "./components/Footer";
-import darkTheme from "./common/themes/DarkTheme";
+import lightTheme from "./common/themes/LightTheme";
 
 function App() {
   return (
-    // <ThemeProvider theme={darkTheme}>
-    <Box sx={{ padding: 0 }}>
+    <ThemeProvider theme={lightTheme}>
       <CssBaseline />
       <LeftMenu />
       <HeroPage />
       <Footer />
-    </Box>
-    // </ThemeProvider>
+    </ThemeProvider>
   );
 }
 

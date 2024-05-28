@@ -3,19 +3,19 @@ import { createTheme } from "@mui/material/styles";
 const font_family =
   '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
-const darkTheme = createTheme({
+const lightTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     primary: {
       main: "#494c7d",
     },
     secondary: {
       main: "#2a9461",
     },
-    background: {
-      default: "#121212",
-      paper: "#121212",
-    },
+    // background: {
+    //   default: "#121212",
+    //   paper: "#121212",
+    // },
   },
   typography: {
     body1: {
@@ -96,4 +96,4 @@ const darkTheme = createTheme({
   },
 });
 
-export default darkTheme;
+export default lightTheme;
