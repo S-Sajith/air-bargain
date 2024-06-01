@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, Button, Grid, useMediaQuery } from "@mui/material";
 import AirportsCombo from "../components/AirportsCombo";
 import DateField from "../components/Datefield";
-import Filler from "./Filler";
+import Filler from "../components/Filler";
 import logo from "../assets/air-bargain-purple-logo-transparent.png";
 
 interface HeroPageProps {
