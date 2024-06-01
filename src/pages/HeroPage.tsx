@@ -6,7 +6,11 @@ import DateField from "../components/Datefield";
 import Filler from "./Filler";
 import logo from "../assets/air-bargain-purple-logo-transparent.png";
 
-const HeroPage = () => {
+interface HeroPageProps {
+  darkMode: boolean;
+}
+
+const HeroPage = ({ darkMode }: HeroPageProps) => {
   const baseURL = "https://api.tequila.kiwi.com/v2/search";
   const apiKey = "awhSTq2D_3Bn5Jx9iYMr1QhuHirhStNb";
 
@@ -84,7 +88,7 @@ const HeroPage = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "#EEEEEE",
+          backgroundColor: darkMode ? "#333333" : "#EEEEEE",
           padding: { xs: "10px", sm: "20px", md: "20px" },
           position: "absolute",
           top: "50%",
@@ -179,7 +183,7 @@ const HeroPage = () => {
             width: "100%",
           }}
         >
-          <Filler />
+          <Filler darkMode={darkMode} />
         </Box>
       )}
     </>

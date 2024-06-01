@@ -7,7 +7,7 @@ import lightTheme from "./common/themes/LightTheme";
 import darkTheme from "./common/themes/DarkTheme";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -17,7 +17,7 @@ function App() {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
       <LeftMenu darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      <HeroPage />
+      <HeroPage darkMode={darkMode} />
       <Footer />
     </ThemeProvider>
   );

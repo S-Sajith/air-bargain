@@ -24,7 +24,11 @@ const data = [
   },
 ];
 
-function Filler() {
+interface FillerProps {
+  darkMode: boolean;
+}
+
+const Filler = ({ darkMode }: FillerProps) => {
   const theme = useTheme();
   const primaryColor = theme.palette.secondary.main;
   return (
@@ -46,7 +50,7 @@ function Filler() {
             display: {
               xs: "none",
               md: "block",
-              backgroundColor: "#EEEEEE",
+              backgroundColor: darkMode ? "#333333" : "#EEEEEE",
               borderRadius: "10px",
               textAlign: "center",
             },
@@ -106,12 +110,9 @@ function Filler() {
             );
           })}
         </Grid>
-        {/* <Grid item xs={12} md={6}>
-          <img src={aircraft} alt="aircraft airplane svg" width="100%" />
-        </Grid> */}
       </Grid>
     </>
   );
-}
+};
 
 export default Filler;
