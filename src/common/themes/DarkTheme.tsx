@@ -14,60 +14,74 @@ const darkTheme = createTheme({
     },
     background: {
       default: "#121212",
-      paper: "#121212",
+      paper: "#1e1e1e",
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "#b0b0b0",
     },
   },
   typography: {
     body1: {
       fontFamily: font_family,
+      color: "#ffffff",
     },
     body2: {
       fontFamily: font_family,
+      color: "#b0b0b0",
     },
     h1: {
       fontFamily: font_family,
+      color: "#ffffff",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     h2: {
       fontFamily: font_family,
+      color: "#ffffff",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     h3: {
       fontFamily: font_family,
+      color: "#ffffff",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     h4: {
       fontFamily: font_family,
+      color: "#ffffff",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     h5: {
       fontFamily: font_family,
+      color: "#ffffff",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     h6: {
       fontFamily: font_family,
+      color: "#ffffff",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     subtitle2: {
       fontFamily: font_family,
+      color: "#b0b0b0",
       "&:first-child": {
         marginTop: "0px",
       },
     },
     subtitle1: {
       fontFamily: font_family,
+      color: "#b0b0b0",
       "&:first-child": {
         marginTop: "0px",
       },
@@ -77,6 +91,8 @@ const darkTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          backgroundColor: "#121212",
+          color: "#ffffff",
           maxHeight: "100vh",
           overflowY: "hidden",
         },
@@ -85,7 +101,8 @@ const darkTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          background: "background.paper",
+          backgroundColor: "#1e1e1e",
+          color: "#ffffff",
           padding: "3px",
         },
       },

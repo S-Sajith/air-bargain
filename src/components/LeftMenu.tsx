@@ -25,10 +25,14 @@ const CustomAppBar = styled(AppBar)(({ theme }) => ({
   height: "35px",
 }));
 
-const LeftMenu = () => {
+interface LeftMenuProps {
+  darkMode: boolean;
+  toggleDarkMode: () => void;
+}
+
+const LeftMenu = ({ darkMode, toggleDarkMode }: LeftMenuProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const primaryDark = "#494c7d";
   const primaryDeep = "#587A95";
   const primaryPale = "#F6F8F8";
@@ -82,11 +86,11 @@ const LeftMenu = () => {
         top: 11,
       },
       "&:before": {
-        backgroundImage: convertSvg(<MdDarkMode color={primaryDeep} />),
+        backgroundImage: convertSvg(<MdOutlineLightMode color={primaryDeep} />),
         left: 3,
       },
       "&:after": {
-        backgroundImage: convertSvg(<MdOutlineLightMode color={primaryDeep} />),
+        backgroundImage: convertSvg(<MdDarkMode color={primaryDeep} />),
         right: 3,
       },
     },
@@ -99,7 +103,7 @@ const LeftMenu = () => {
       top: 0,
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      backgroundImage: convertSvg(<MdDarkMode color={primaryPale} />),
+      backgroundImage: convertSvg(<MdOutlineLightMode color={primaryPale} />),
     },
     "& .MuiSwitch-switchBase": {
       "&.Mui-checked": {
@@ -112,9 +116,7 @@ const LeftMenu = () => {
           top: 0,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          backgroundImage: convertSvg(
-            <MdOutlineLightMode color={primaryPale} />
-          ),
+          backgroundImage: convertSvg(<MdDarkMode color={primaryPale} />),
         },
       },
     },
@@ -136,10 +138,6 @@ const LeftMenu = () => {
 
   const handleInfoDialogClose = () => {
     setInfoDialogOpen(false);
-  };
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
   };
 
   return (
