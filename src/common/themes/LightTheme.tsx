@@ -12,10 +12,6 @@ const lightTheme = createTheme({
     secondary: {
       main: "#2a9461",
     },
-    // background: {
-    //   default: "#121212",
-    //   paper: "#121212",
-    // },
   },
   typography: {
     body1: {

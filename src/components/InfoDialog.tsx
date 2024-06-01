@@ -13,7 +13,9 @@ const InfoDialog = (props: any) => {
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Info</DialogTitle>
       <DialogContent>
-        <Typography>This is the Info dialog content.</Typography>
+        <Typography>
+          A website for searching cheap domestic flights in India.
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Close</Button>

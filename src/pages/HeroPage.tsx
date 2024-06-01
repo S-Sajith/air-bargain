@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Button, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Grid, useMediaQuery } from "@mui/material";
 import AirportsCombo from "../components/AirportsCombo";
 import DateField from "../components/Datefield";
-import { useNavigate } from "react-router";
+import Filler from "./Filler";
+import logo from "../assets/air-bargain-purple-logo-transparent.png";
 
 const HeroPage = () => {
   const baseURL = "https://api.tequila.kiwi.com/v2/search";
@@ -15,7 +16,6 @@ const HeroPage = () => {
     date_depart: "",
     date_arrive: "",
   });
-  // const navigate = useNavigate();
 
   const handleDateChange = (e: any) => {
     const { name, value } = e.target;
@@ -56,9 +56,29 @@ const HeroPage = () => {
   };
 
   const isXs = useMediaQuery("(max-width:600px)");
+  const isMd = useMediaQuery("(max-width:1024px)");
 
   return (
     <>
+      {!isXs && !isMd && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "25%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
+          }}
+        >
+          <img
+            src={logo}
+            alt="Airplane"
+            style={{
+              width: "40vw",
+            }}
+          />
+        </Box>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -149,6 +169,17 @@ const HeroPage = () => {
           >
             Search Flights
           </Button>
+        </Box>
+      )}
+      {!isXs && !isMd && (
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "4vh",
+            width: "100%",
+          }}
+        >
+          <Filler />
         </Box>
       )}
     </>
