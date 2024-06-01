@@ -3,6 +3,7 @@ import LeftMenu from "./components/LeftMenu";
 import HeroPage from "./pages/HeroPage";
 import Footer from "./components/Footer";
 import lightTheme from "./common/themes/LightTheme";
+import darkTheme from "./common/themes/DarkTheme";
 
 function App() {
   return (

@@ -1,8 +1,9 @@
-import { Autocomplete, Box, TextField } from "@mui/material";
+import { Autocomplete, Box, TextField, useMediaQuery } from "@mui/material";
 import IndianAirports from "../common/data/IndianAirports";
 
 const AirportsCombo = (props: any) => {
   const { setLocation, label } = props;
+  const isXs = useMediaQuery("(max-width:600px)");
 
   const handleLocationChange = (event: any, value: any) => {
     if (value) {
@@ -19,30 +20,26 @@ const AirportsCombo = (props: any) => {
       groupBy={(option) => option.state}
       onChange={handleLocationChange}
       sx={{
-        width: { sm: "100%", md: 340 },
+        width: { xs: "100%", md: 340 },
         ".MuiOutlinedInput-root": {
-          height: "85px",
+          height: isXs ? "68px" : "85px",
         },
         ".MuiOutlinedInput-input": {
-          fontSize: "30px",
+          fontSize: isXs ? "24px" : "30px",
         },
         ".MuiInputLabel-root": {
-          fontSize: "28px",
-          // marginTop: "5px",
-          // marginLeft: "-5px",
+          fontSize: isXs ? "22.4px" : "28px",
           "&.MuiInputLabel-shrink": {
-            fontSize: "16px",
-            transform: "translate(10px, -9px) scale(1)",
+            fontSize: isXs ? "11.2px" : "14px",
+            transform: isXs
+              ? "translate(12px, -7px) scale(1)"
+              : "translate(12px, -9px) scale(1)",
           },
         },
         ".MuiPaper-root-MuiAutocomplete-paper": {
           backgroundColor: "white !important",
           color: "black !important",
         },
-        // ".MuiAutocomplete-groupLabel": {
-        //   backgroundColor: "grey",
-        //   color: "black",
-        // },
       }}
       selectOnFocus
       renderOption={(props, option) => (
@@ -50,8 +47,6 @@ const AirportsCombo = (props: any) => {
           component="li"
           sx={{
             "& > img": { mr: 2, flexShrink: 0 },
-            // bgcolor: "lightgray",
-            // color: "black",
           }}
           {...props}
         >

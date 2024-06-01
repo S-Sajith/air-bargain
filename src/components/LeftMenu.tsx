@@ -4,46 +4,93 @@ import {
   Toolbar,
   styled,
   IconButton,
-  Button,
   Link,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Menu,
+  MenuItem,
   Typography,
+  Switch,
 } from "@mui/material";
-import Switch from "@mui/material/Switch";
+import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../assets/air-bargain-high-resolution-logo-transparent.png";
-import { useState } from "react";
 import InfoDialog from "./InfoDialog";
+import { useState } from "react";
+import { useMediaQuery } from "@mui/material";
+import { renderToStaticMarkup } from "react-dom/server";
 
-const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-  width: 62,
-  height: 34,
-  padding: 7,
-  "& .MuiSwitch-switchBase": {
-    margin: 1,
+import { MdDarkMode } from "react-icons/md";
+import { MdOutlineLightMode } from "react-icons/md";
+
+const CustomAppBar = styled(AppBar)(({ theme }) => ({
+  borderRadius: theme.spacing(0),
+  height: "35px",
+}));
+
+const LeftMenu = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const primaryDark = "#494c7d";
+  const primaryDeep = "#587A95";
+  const primaryPale = "#F6F8F8";
+  const primaryLight = "#E0E7EB";
+
+  const BaseSwitch = styled(Switch)({
+    width: 45,
+    height: 22,
     padding: 0,
-    transform: "translateX(6px)",
-    "&.Mui-checked": {
-      color: "#fff",
-      transform: "translateX(22px)",
-      "& .MuiSwitch-thumb:before": {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-          "#fff"
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
-      },
-      "& + .MuiSwitch-track": {
-        opacity: 1,
-        backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+    display: "flex",
+    "& .MuiSwitch-switchBase": {
+      padding: 2,
+      "&.Mui-checked": {
+        transform: "translateX(23px)",
+        "& + .MuiSwitch-track": {
+          opacity: 1,
+          backgroundColor: primaryPale,
+        },
       },
     },
-  },
-  "& .MuiSwitch-thumb": {
-    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
-    width: 32,
-    height: 32,
-    "&::before": {
+    "& .MuiSwitch-thumb": {
+      width: 18,
+      height: 18,
+      borderRadius: "25px",
+      backgroundColor: primaryDark,
+    },
+    "& .MuiSwitch-track": {
+      opacity: 1,
+      borderRadius: "25px",
+      border: `1px solid ${primaryLight}`,
+      backgroundColor: primaryPale,
+      boxSizing: "border-box",
+    },
+  });
+
+  const convertSvg = (svg: React.ReactElement) => {
+    const markup = renderToStaticMarkup(svg);
+    const encoded = encodeURIComponent(markup);
+    const dataUri = `url('data:image/svg+xml;utf8,${encoded}')`;
+    return dataUri;
+  };
+
+  const SwitchWithIcons = styled(BaseSwitch)({
+    "& .MuiSwitch-track": {
+      "&:before, &:after": {
+        content: '""',
+        position: "absolute",
+        transform: "translateY(-50%)",
+        width: 16,
+        height: 16,
+        top: 11,
+      },
+      "&:before": {
+        backgroundImage: convertSvg(<MdDarkMode color={primaryDeep} />),
+        left: 3,
+      },
+      "&:after": {
+        backgroundImage: convertSvg(<MdOutlineLightMode color={primaryDeep} />),
+        right: 3,
+      },
+    },
+    "& .MuiSwitch-thumb:before": {
       content: "''",
       position: "absolute",
       width: "100%",
@@ -52,32 +99,47 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       top: 0,
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-        "#fff"
-      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+      backgroundImage: convertSvg(<MdDarkMode color={primaryPale} />),
     },
-  },
-  "& .MuiSwitch-track": {
-    opacity: 1,
-    backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
-    borderRadius: 20 / 2,
-  },
-}));
+    "& .MuiSwitch-switchBase": {
+      "&.Mui-checked": {
+        "& .MuiSwitch-thumb:before": {
+          content: "''",
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          left: 0,
+          top: 0,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundImage: convertSvg(
+            <MdOutlineLightMode color={primaryPale} />
+          ),
+        },
+      },
+    },
+  });
 
-const CustomAppBar = styled(AppBar)(({ theme }) => ({
-  borderRadius: theme.spacing(0),
-  height: "35px",
-}));
+  const isXs = useMediaQuery("(max-width:600px)");
 
-const LeftMenu = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setAnchorEl(null);
+  };
+
+  const handleInfoDialogOpen = () => {
+    setInfoDialogOpen(true);
+  };
+
+  const handleInfoDialogClose = () => {
+    setInfoDialogOpen(false);
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
   };
 
   return (
@@ -88,41 +150,120 @@ const LeftMenu = () => {
             src={logo}
             alt="Logo"
             style={{
-              width: 130,
+              width: isXs ? 120 : 130,
               marginRight: "-35px",
               marginLeft: "-15px",
-              marginTop: "-35px",
+              marginTop: isXs ? "-7px" : "-35px",
             }}
           />
         </Box>
         <Box sx={{ flexGrow: 1 }} />
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            marginTop: "-36px",
-          }}
-        >
-          <Typography
-            color="inherit"
-            onClick={handleClickOpen}
-            style={{ cursor: "pointer" }}
+        {isXs ? (
+          <Box sx={{ flexGrow: 0, display: "flex" }}>
+            <IconButton
+              size="large"
+              aria-label="menu"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleClick}
+              color="inherit"
+              sx={{ marginRight: "-19px", marginTop: "-10px" }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              MenuListProps={{
+                sx: { paddingTop: 0, paddingBottom: 0 },
+              }}
+            >
+              <MenuItem
+                onClick={handleInfoDialogOpen}
+                sx={{
+                  py: 0.5,
+                  minHeight: "30px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                }}
+              >
+                <Typography color="inherit" sx={{ fontSize: "0.9rem" }}>
+                  Info
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                sx={{
+                  py: 0.5,
+                  minHeight: "30px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                }}
+              >
+                <Link
+                  href="https://github.com/S-Sajith/air-bargain"
+                  color="inherit"
+                  underline="hover"
+                  target="_blank"
+                >
+                  <Typography sx={{ fontSize: "0.9rem" }}>Github</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem
+                sx={{
+                  py: 0.5,
+                  minHeight: "30px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                }}
+              >
+                <Box>
+                  <SwitchWithIcons
+                    checked={darkMode}
+                    onChange={toggleDarkMode}
+                  />
+                </Box>
+              </MenuItem>
+            </Menu>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              marginTop: "-36px",
+            }}
           >
-            Info
-          </Typography>
-          <Link
-            href="https://github.com/S-Sajith/air-bargain"
-            color="inherit"
-            underline="hover"
-            target="_blank"
-          >
-            Github
-          </Link>
-          <MaterialUISwitch />
-        </Box>
+            <Typography
+              color="inherit"
+              onClick={handleInfoDialogOpen}
+              style={{ cursor: "pointer" }}
+            >
+              Info
+            </Typography>
+            <Link
+              href="https://github.com/S-Sajith/air-bargain"
+              color="inherit"
+              underline="hover"
+              target="_blank"
+            >
+              Github
+            </Link>
+            <SwitchWithIcons checked={darkMode} onChange={toggleDarkMode} />
+          </Box>
+        )}
       </Toolbar>
-      <InfoDialog open={open} onClose={handleClose} />
+      <InfoDialog open={infoDialogOpen} onClose={handleInfoDialogClose} />
     </CustomAppBar>
   );
 };

@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -6,6 +7,7 @@ function DateField(props: any) {
   let name = props.name;
   let changeType = props.changeType;
   let label = props.label;
+  const isXs = useMediaQuery("(max-width:600px)");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -24,16 +26,18 @@ function DateField(props: any) {
             sx: {
               width: { sm: "100%", md: 340 },
               ".MuiOutlinedInput-root": {
-                height: "85px",
+                height: isXs ? "68px" : "85px",
               },
               ".MuiOutlinedInput-input": {
-                fontSize: "30px",
+                fontSize: isXs ? "24px" : "30px",
               },
               ".MuiInputLabel-root": {
-                fontSize: "28px",
+                fontSize: isXs ? "22.4px" : "28px",
                 "&.MuiInputLabel-shrink": {
-                  fontSize: "16px",
-                  transform: "translate(10px, -9px) scale(1)",
+                  fontSize: isXs ? "11.2px" : "14px",
+                  transform: isXs
+                    ? "translate(12px, -7px) scale(1)"
+                    : "translate(12px, -9px) scale(1)",
                 },
               },
               ".legend": {

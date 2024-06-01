@@ -11,7 +11,7 @@ const Footer = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "0 20px",
+        padding: "0 10px",
       }}
     >
       <img

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Grid, useMediaQuery, useTheme } from "@mui/material";
 import AirportsCombo from "../components/AirportsCombo";
 import DateField from "../components/Datefield";
 import { useNavigate } from "react-router";
@@ -55,58 +55,102 @@ const HeroPage = () => {
     }
   };
 
+  const isXs = useMediaQuery("(max-width:600px)");
+
   return (
     <>
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
+          alignItems: "center",
           backgroundColor: "#EEEEEE",
-          padding: "20px",
+          padding: { xs: "10px", sm: "20px", md: "20px" },
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           gap: "10px",
           borderRadius: "10px",
+          width: { xs: "90%", sm: "70%", md: "70vw", lg: "98vw" },
         }}
       >
-        <AirportsCombo setLocation={setSource} label={"From"} />
-        <AirportsCombo setLocation={setDestination} label={"To"} />
-        <DateField
-          label="Departure"
-          changeType={handleDateChange}
-          name="date_depart"
-        />
-        <DateField
-          label="Return"
-          changeType={handleDateChange}
-          name="date_return"
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
+            <AirportsCombo setLocation={setSource} label={"From"} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
+            <AirportsCombo setLocation={setDestination} label={"To"} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
+            <DateField
+              label="Departure"
+              changeType={handleDateChange}
+              name="date_depart"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
+            <DateField
+              label="Return"
+              changeType={handleDateChange}
+              name="date_return"
+            />
+          </Grid>
+        </Grid>
+        {isXs && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              marginTop: "10px",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={fetchData}
+              sx={{
+                padding: "10px 20px",
+                fontSize: "12px",
+                borderRadius: "10px",
+              }}
+            >
+              Search Flights
+            </Button>
+          </Box>
+        )}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "10px",
-          position: "absolute",
-          top: "calc(50% + 70px)",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fetchData()}
+      {!isXs && (
+        <Box
           sx={{
-            padding: "15px 30px",
-            fontSize: "18px",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "10px",
+            position: "absolute",
+            top: {
+              sm: "calc(50% + 18vh)",
+              md: "calc(50% + 18vh)",
+              lg: "calc(50% + 11vh)",
+            },
+            left: "50%",
+            transform: "translate(-50%, -50%)",
           }}
         >
-          Search
-        </Button>
-      </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={fetchData}
+            sx={{
+              padding: { xs: "10px 20px", sm: "12px 24px", md: "15px 30px" },
+              fontSize: { xs: "14px", sm: "16px", md: "18px" },
+              borderRadius: "10px",
+            }}
+          >
+            Search Flights
+          </Button>
+        </Box>
+      )}
     </>
   );
 };
