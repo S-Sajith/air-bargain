@@ -1,25 +1,50 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Button, Grid, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  useMediaQuery,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import AirportsCombo from "../components/AirportsCombo";
 import DateField from "../components/Datefield";
 import Filler from "../components/Filler";
 import logo from "../assets/air-bargain-purple-logo-transparent.png";
+import { useNavigate } from "react-router";
+import { useFlightData } from "../components/FlightDataContext";
 
 interface HeroPageProps {
   darkMode: boolean;
 }
 
+interface SnackbarState {
+  open: boolean;
+  message: string;
+  severity: "success" | "info" | "warning" | "error";
+}
+
 const HeroPage = ({ darkMode }: HeroPageProps) => {
   const baseURL = "https://api.tequila.kiwi.com/v2/search";
   const apiKey = "awhSTq2D_3Bn5Jx9iYMr1QhuHirhStNb";
-
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [source, setSource] = useState<any>();
   const [destination, setDestination] = useState<any>();
   const [date, setDate] = useState<any>({
     date_depart: "",
-    date_arrive: "",
+    date_return: "",
   });
+  const [snackbarState, setSnackbarState] = useState<SnackbarState>({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+  const { setFlightData } = useFlightData();
+  const isXs = useMediaQuery("(max-width:600px)");
+  const isMd = useMediaQuery("(max-width:1024px)");
 
   const handleDateChange = (e: any) => {
     const { name, value } = e.target;
@@ -28,17 +53,32 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
     });
   };
 
-  console.log("source", source);
-
   const fetchData = async () => {
+    if (new Date(date.date_return) < new Date(date.date_depart)) {
+      console.log("called");
+      setSnackbarState({
+        open: true,
+        message: "Return date cannot be before departure date",
+        severity: "warning",
+      });
+      return;
+    }
+
+    setLoading(true);
+    setSnackbarState({
+      open: false,
+      message: "",
+      severity: "error",
+    });
+
     const config = {
       method: "get",
       maxBodyLength: Infinity,
       url: baseURL,
       headers: { apikey: apiKey },
       params: {
-        fly_from: source.IATA,
-        fly_to: destination.IATA,
+        fly_from: source?.IATA,
+        fly_to: destination?.IATA,
         date_from: date?.date_depart,
         date_to: date?.date_depart,
         return_from: date?.date_return,
@@ -54,13 +94,31 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
       const response = await axios.request(config);
       const flight_data = response.data["data"];
       console.log("flightData", flight_data);
+      setFlightData(flight_data);
+
+      if (flight_data.length === 0) {
+        setSnackbarState({
+          open: true,
+          message: "Flight data not found",
+          severity: "warning",
+        });
+      } else {
+        navigate("/searchResults");
+      }
     } catch (error) {
-      console.error(error);
+      setSnackbarState({
+        open: true,
+        message: "An error occurred while fetching flight data",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
-  const isXs = useMediaQuery("(max-width:600px)");
-  const isMd = useMediaQuery("(max-width:1024px)");
+  const handleSnackbarClose = () => {
+    setSnackbarState((prev) => ({ ...prev, open: false }));
+  };
 
   return (
     <>
@@ -139,8 +197,9 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
                 fontSize: "12px",
                 borderRadius: "10px",
               }}
+              disabled={loading}
             >
-              Search Flights
+              {loading ? <CircularProgress size={24} /> : "Search Flights"}
             </Button>
           </Box>
         )}
@@ -170,8 +229,9 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
               fontSize: { xs: "14px", sm: "16px", md: "18px" },
               borderRadius: "10px",
             }}
+            disabled={loading}
           >
-            Search Flights
+            {loading ? <CircularProgress size={24} /> : "Search Flights"}
           </Button>
         </Box>
       )}
@@ -186,6 +246,19 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
           <Filler darkMode={darkMode} />
         </Box>
       )}
+      <Snackbar
+        open={snackbarState.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarState.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarState.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

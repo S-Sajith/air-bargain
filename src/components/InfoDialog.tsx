@@ -14,11 +14,13 @@ const InfoDialog = (props: any) => {
       <DialogTitle>Info</DialogTitle>
       <DialogContent>
         <Typography>
-          A website for searching cheap domestic flights in India.
+          Am open source website for searching cheap domestic flights in India.
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button variant="contained" onClick={onClose}>
+          Close
+        </Button>
       </DialogActions>
     </Dialog>
   );
