@@ -8,7 +8,7 @@ import MobileFlightNotFound from "../components/Mobile/MobileFlightNotFound";
 import MobileResultBox from "../components/Mobile/MobileResultBox";
 import MobileResultDeals from "../components/Mobile/MobileResultDeals";
 import MobileTicket from "../components/Mobile/MobileTicket";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 interface SearchResultsProps {
@@ -45,7 +45,11 @@ const SearchResults = ({ darkMode }: SearchResultsProps) => {
 
   return (
     <div>
-      <section style={{ display: { xs: "block", md: "none" } }}>
+      <section
+        style={{
+          display: { xs: "block", md: "none" } as any,
+        }}
+      >
         <Container
           sx={{
             pt: 2,

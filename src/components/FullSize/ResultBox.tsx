@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { Button, Chip, Container, Typography } from "@mui/material";
+import { Chip, Container, Typography } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import { Airports } from "../../common/data/Airports";
 import { numberWithCommas } from "../../common/services/functions";

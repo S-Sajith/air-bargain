@@ -5,7 +5,7 @@ const AirportsCombo = (props: any) => {
   const { setLocation, label } = props;
   const isXs = useMediaQuery("(max-width:600px)");
 
-  const handleLocationChange = (event: any, value: any) => {
+  const handleLocationChange = (_event: any, value: any) => {
     if (value) {
       setLocation(value);
     }
