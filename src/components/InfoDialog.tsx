@@ -14,7 +14,7 @@ const InfoDialog = (props: any) => {
       <DialogTitle>Info</DialogTitle>
       <DialogContent>
         <Typography>
-          Am open source website for searching cheap domestic flights in India.
+          An open source website for searching cheap domestic flights in India.
         </Typography>
       </DialogContent>
       <DialogActions>

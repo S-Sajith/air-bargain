@@ -10,15 +10,15 @@ const IndianAirports: AirportDataFormat[] = [
     /*                            POPULAR DESTINATIONS                            */
     /* -------------------------------------------------------------------------- */
     {
-        location: "New Delhi",
-        IATA: "DEL",
-        airport: "Indira Gandhi International Airport",
-        state: "✈️ Popular"
-    },
-    {
         location: "Bengaluru",
         IATA: "BLR",
         airport: "Kempegowda International Airport",
+        state: "✈️ Popular"
+    },
+    {
+        location: "New Delhi",
+        IATA: "DEL",
+        airport: "Indira Gandhi International Airport",
         state: "✈️ Popular"
     },
     {

@@ -45,11 +45,20 @@ function DateField(props: any) {
                 fontWeight: 500,
                 letterSpacing: 0.6,
               },
-              ".MuiPaper-root-MuiAutocomplete-paper": {
-                backgroundColor: "white !important",
-                color: "black !important",
+            },
+          },
+          actionBar: {
+            actions: ["accept", "cancel", "clear"],
+            sx: {
+              "& .MuiButtonBase-root.MuiButton-root": {
+                backgroundColor: "#494c7d",
+                color: "white",
+                fontSize: "10px",
               },
             },
+          },
+          popper: {
+            placement: isXs ? "auto" : "left-start",
           },
         }}
       />

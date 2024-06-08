@@ -15,6 +15,7 @@ import Filler from "../components/Filler";
 import logo from "../assets/air-bargain-purple-logo-transparent.png";
 import { useNavigate } from "react-router";
 import { useFlightData } from "../components/FlightDataContext";
+import { isAfter, parse } from "date-fns";
 
 interface HeroPageProps {
   darkMode: boolean;
@@ -27,15 +28,13 @@ interface SnackbarState {
 }
 
 const HeroPage = ({ darkMode }: HeroPageProps) => {
-  const baseURL = "https://api.tequila.kiwi.com/v2/search";
-  const apiKey = "awhSTq2D_3Bn5Jx9iYMr1QhuHirhStNb";
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [source, setSource] = useState<any>();
   const [destination, setDestination] = useState<any>();
   const [date, setDate] = useState<any>({
-    date_depart: "",
-    date_return: "",
+    date_from: "",
+    date_to: "",
   });
   const [snackbarState, setSnackbarState] = useState<SnackbarState>({
     open: false,
@@ -54,35 +53,66 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
   };
 
   const fetchData = async () => {
-    if (new Date(date.date_return) < new Date(date.date_depart)) {
-      console.log("called");
+    if (!source) {
       setSnackbarState({
         open: true,
-        message: "Return date cannot be before departure date",
+        message: "Please select a source airport.",
+        severity: "warning",
+      });
+      return;
+    }
+
+    if (!destination) {
+      setSnackbarState({
+        open: true,
+        message: "Please select a destination airport.",
+        severity: "warning",
+      });
+      return;
+    }
+
+    if (source.IATA === destination.IATA) {
+      setSnackbarState({
+        open: true,
+        message: "Source and destination cannot be the same.",
+        severity: "warning",
+      });
+      return;
+    }
+
+    if (!date.date_from || !date.date_to) {
+      setSnackbarState({
+        open: true,
+        message: "Please select both 'From' and 'To' dates.",
+        severity: "warning",
+      });
+      return;
+    }
+
+    const dateFrom = parse(date.date_from, "dd/MM/yyyy", new Date());
+    const dateTo = parse(date.date_to, "dd/MM/yyyy", new Date());
+
+    if (isAfter(dateFrom, dateTo)) {
+      setSnackbarState({
+        open: true,
+        message: "To date cannot be before from date",
         severity: "warning",
       });
       return;
     }
 
     setLoading(true);
-    setSnackbarState({
-      open: false,
-      message: "",
-      severity: "error",
-    });
 
     const config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: baseURL,
-      headers: { apikey: apiKey },
+      url: import.meta.env.VITE_APP_API_URL,
+      headers: { apikey: import.meta.env.VITE_APP_API_KEY },
       params: {
         fly_from: source?.IATA,
         fly_to: destination?.IATA,
-        date_from: date?.date_depart,
-        date_to: date?.date_depart,
-        return_from: date?.date_return,
-        return_to: date?.date_return,
+        date_from: date?.date_from,
+        date_to: date?.date_to,
         curr: "INR",
         limit: 50,
         sort: "price",
@@ -93,7 +123,6 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
     try {
       const response = await axios.request(config);
       const flight_data = response.data["data"];
-      console.log("flightData", flight_data);
       setFlightData(flight_data);
 
       if (flight_data.length === 0) {
@@ -105,10 +134,10 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
       } else {
         navigate("/searchResults");
       }
-    } catch (error) {
+    } catch (error: any) {
       setSnackbarState({
         open: true,
-        message: "An error occurred while fetching flight data",
+        message: error.response.data.error,
         severity: "error",
       });
     } finally {
@@ -166,16 +195,16 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DateField
-              label="Departure"
+              label="Search from"
               changeType={handleDateChange}
-              name="date_depart"
+              name="date_from"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DateField
-              label="Return"
+              label="Search to"
               changeType={handleDateChange}
-              name="date_return"
+              name="date_to"
             />
           </Grid>
         </Grid>
@@ -199,7 +228,11 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
               }}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : "Search Flights"}
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Search Flights"
+              )}
             </Button>
           </Box>
         )}
@@ -231,7 +264,11 @@ const HeroPage = ({ darkMode }: HeroPageProps) => {
             }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} /> : "Search Flights"}
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "Search Flights"
+            )}
           </Button>
         </Box>
       )}
